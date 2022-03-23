@@ -42,4 +42,15 @@ console.log(symbolArray);
 //3 - adding circle symbol to paragrah
 wordIP.innerText = symbolArray.join("");
 
+//Add an event listener for the Button
+guessButton.addEventListener("click",function(e){
+  e.preventDefault();
+  const letter = inputLetter.value;
+ console.log(letter);
+ inputLetter.value = "";
+});
 
+//empty the value of the input
+const clearInput = function() {
+  inputLetter.value = "";
+};
