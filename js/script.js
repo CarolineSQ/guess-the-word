@@ -84,14 +84,50 @@ const makeGuess = function (guess){
     message.innerText = "You've already tried that letter, please try again";
   } else {
     guessedLetters.push(guess);
-  
-console.log(guessedLetters);
+    console.log(guessedLetters);
+    showguessedLetters();
+    updateWIP(guessedLetters);
+
   }
 };
 
+//function to show the Guessed letters
+
+const showguessedLetters = function (){
+  //empty list
+  guessedLettersElement.innerHTML = "";
+    const listItem = document.createElement("li");
+    listItem.innerText = guessedLetters.join(" ");
+    guessedLettersElement.append(listItem);
+  };
 
 
+//create a function to update the word in progress
 
+const updateWIP = function (guessedLetters) {
+  //change word to uppercase
+const wordUpper = word.toUpperCase();
+//change wordUpper to an array
+const wordArray = wordUpper.split(""); 
+//console.log(wordArray);
+const updatedChar = [];
+  for (const letter of wordArray) {
+    if(guessedLetters.includes(letter)) {
+     updatedChar.push(letter.toUpperCase());
+    }else {
+      updatedChar.push("●");
+    }
+    
+  }
+  console.log(updatedChar);
+  wordIP.innerText = updatedChar.join("");
+  checkWin();
+};
 
-
+const checkWin = function (){
+  if (wordIP.innerText === word.toUpperCase()){
+    message.classList.add("win");
+    message.innerHTML = `<p class="highlight">You guessed correct the word! Congrats!</p>`;
+  }
+};
 
