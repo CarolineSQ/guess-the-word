@@ -20,13 +20,30 @@ const paButton = document.querySelector (".play-again");
 console.log(paButton);
 console.log(wordIP);
 //starting word
-const word = "magnolia";
+let word = "magnolia";
 //all the letters that the player guesses
 const guessedLetters = [];
+let remainingGuesses = 8;
 
+const getWord = async function(){
+  const res = await fetch(
+    "https://gist.githubusercontent.com/skillcrush-curriculum/7061f1d4d3d5bfe47efbfbcfe42bf57e/raw/5ffc447694486e7dea686f34a6c085ae371b43fe/words.txt");
+  const words = await res.text();
+  //console.log (words);
+  const wordArray = words.split("\n");
+  //console.log(wordArray);
+  // Get a random word from the array
+  const randomIndex = Math.floor(Math.random() * wordArray.length);
+ word = wordArray[randomIndex].trim();
+ //console.log(randomIndex);  
+ placeholder(word);
+};
+
+getWord();
 //Function to add placeholders
 
-const placeholder = function (){
+const placeholder = function (word){
+
   // 1 -creating an array of characters made of the letters of const word
 //console.log(word.split(""));
   const wordLetters = word.split("");
@@ -38,7 +55,6 @@ const placeholder = function (){
   //3 - adding circle symbol to paragrah
 wordIP.innerText = symbolArray.join("");
 };
-placeholder (word);
 //console.log(symbolArray);
 
 
@@ -86,6 +102,7 @@ const makeGuess = function (guess){
     guessedLetters.push(guess);
     console.log(guessedLetters);
     showguessedLetters();
+    countGuesses(guess);
     updateWIP(guessedLetters);
 
   }
@@ -124,6 +141,27 @@ const updatedChar = [];
   checkWin();
 };
 
+//function to count Guesses remaining
+
+const countGuesses = function (guess){
+  const wordUpper = word.toUpperCase();
+
+    if (!wordUpper.includes(guess)){
+    message.innerText = `Sorry, the word does not have the letter ${guess}.`;
+remainingGuesses-= 1;
+} else {
+  message.innerText = `Good guess! The word has the letter ${guess}.`;
+  }
+if (remainingGuesses === 0) {
+  message.innerHTML = `Game over! The word was <span class="highlight">${word}</span>.`;
+} else if (remainingGuesses === 1) {
+  remainingNum.innerText = "only 1 guess";
+} else { remainingNum.innerText = `${remainingGuesses} guesses`;
+}
+
+};
+
+//function to check if the player has won
 const checkWin = function (){
   if (wordIP.innerText === word.toUpperCase()){
     message.classList.add("win");
