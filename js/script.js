@@ -9,7 +9,7 @@ console.log(letterInput);
 //word in progress element
 const wordIP = document.querySelector (".word-in-progress");
 //remaining guesses
-const remaining = document.querySelector ("remaining");
+const remaining = document.querySelector (".remaining");
 //number of guesses number
 const remainingNum = document.querySelector ("span");
 console.log(remainingNum);
@@ -22,7 +22,7 @@ console.log(wordIP);
 //starting word
 let word = "magnolia";
 //all the letters that the player guesses
-const guessedLetters = [];
+let guessedLetters = [];
 let remainingGuesses = 8;
 
 const getWord = async function(){
@@ -38,7 +38,7 @@ const getWord = async function(){
  //console.log(randomIndex);  
  placeholder(word);
 };
-
+//start game
 getWord();
 //Function to add placeholders
 
@@ -93,7 +93,7 @@ const checkInput = function (input){
     return input;
   }
 };
-//step 3 function to capture input
+//step 3 function to capture input - BIG ONE
 const makeGuess = function (guess){
   guess = guess.toUpperCase();
   if (guessedLetters.includes (guess)) {
@@ -105,10 +105,11 @@ const makeGuess = function (guess){
     countGuesses(guess);
     updateWIP(guessedLetters);
 
+
   }
 };
 
-//function to show the Guessed letters
+//step 4 function to show the Guessed letters
 
 const showguessedLetters = function (){
   //empty list
@@ -154,6 +155,7 @@ remainingGuesses-= 1;
   }
 if (remainingGuesses === 0) {
   message.innerHTML = `Game over! The word was <span class="highlight">${word}</span>.`;
+  startOver();
 } else if (remainingGuesses === 1) {
   remainingNum.innerText = "only 1 guess";
 } else { remainingNum.innerText = `${remainingGuesses} guesses`;
@@ -165,7 +167,33 @@ if (remainingGuesses === 0) {
 const checkWin = function (){
   if (wordIP.innerText === word.toUpperCase()){
     message.classList.add("win");
-    message.innerHTML = `<p class="highlight">You guessed correct the word! Congrats!</p>`;
+    message.innerHTML = `<p class="highlight">You guessed the correct word! Congrats!</p>`;
+    startOver();
   }
 };
+//function to hide guessButton, list of remaining guesses, guessed letters
+const startOver = function() {
+  guessButton.classList.add("hide");
+  remaining.classList.add("hide");
+  guessedLettersElement.classList.add("hide");
+  paButton.classList.remove("hide");
+};
 
+paButton.addEventListener("click",function(){
+//reset all original values - grab new word  
+message.classList.remove("win");
+guessedLetters = [];
+remainingGuesses = 8;
+remainingNum.innerText = `${remainingGuesses} guesses`;
+guessedLettersElement.innerHTML = "";
+message.innerText = "";
+
+getWord();
+
+//show the right UI elements
+
+guessButton.classList.remove("hide");
+remaining.classList.remove("hide");
+guessedLettersElement.classList.remove("hide");
+paButton.classList.add("hide");
+});
