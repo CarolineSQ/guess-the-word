@@ -93,7 +93,7 @@ const checkInput = function (input){
     return input;
   }
 };
-//step 3 function to capture input - BIG ONE
+//step 3 function to capture input - BIG ONE with lots of passing functions
 const makeGuess = function (guess){
   guess = guess.toUpperCase();
   if (guessedLetters.includes (guess)) {
